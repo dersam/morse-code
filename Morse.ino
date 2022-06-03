@@ -6,8 +6,6 @@ const int pushButton = 6;
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-const String onState = "sam";
-const String offState = "kirk";
 int previousButtonState;
 long onStateBegan = 0;
 
@@ -22,7 +20,16 @@ void loop() {
 
   if (previousButtonState != buttonState) {
     lcd.clear();
-    buttonState == BUTTON_ON ? writeTop(onState) : writeTop(offState);
+    if (buttonState == BUTTON_ON) {
+      onStateBegan = millis();
+      writeTop("Counting!");
+    } else {
+      writeTop("Milliseconds:");
+      char count[40];
+      sprintf(count,"%lu", millis() - onStateBegan);
+      writeBottom(count);
+    }
+
     previousButtonState = buttonState;
   }
 }
